@@ -1,0 +1,40 @@
+<?php if ($this->objGestBookDetails): ?>
+    <div class="container-fluid p-4" style="background-color:#000000; color:#ffffff">
+        <?php foreach ($this->objGestBookDetails as $objGestBookDetail): ?>
+            <div class="col-lg-12 mt-5">
+                <h2>
+                    <?= $objGestBookDetail->gestbook_header ?>
+                </h2>
+                <p>
+                    <?= $objGestBookDetail->description ?>
+                </p>
+                <h6>All Comments</h6>
+                <div class="row">
+                    <?php $objGestBookComments = Diganta\GestbookBundle\Model\GestBookCommentModel::findByPid($objGestBookDetail->id) ?>
+                    <?php foreach ($objGestBookComments as $objGestBookComment): ?>
+                        <div class="col-lg-6">
+                            <h5>
+                                <?= $objGestBookComment->comment ?>
+                            </h5>
+                        </div>
+                        <div class="col-lg-6">
+                            <p><strong>Time:: </strong>
+                                <?= date('d/m/Y H:i:s', $objGestBookComment->tstamp); ?>
+                            </p>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+            </div>
+            <form method="post" action="<?= $_SERVER['HTTP_REFERER'] ?>">
+                <input type="hidden" name="id" value="<?= $objGestBookDetail->id ?>">
+                <div class="form-group p-3">
+                    <label for="exampleFormControlTextarea1">Example textarea</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment"></textarea>
+                </div>
+                <input type="hidden" name="REQUEST_TOKEN" id="REQUEST_TOKEN" value="<?= REQUEST_TOKEN ?>">
+                <button type="submit" name="submit" class="btn btn-primary mb-2 ml-3">Reply</button>
+            </form>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
